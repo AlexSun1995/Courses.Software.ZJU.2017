@@ -39,44 +39,20 @@ public class Game {
     	  if(barrierDelay < 0)
     	  {
     		  barrierDelay = DELAY;
-    		  Barrier northBarrier = null;
-    		  Barrier southBarrier = null;
-    		  for(Barrier b: barriers)
-    		  {
-    			  if(b.x - b.width < 0)
-    			  {   
-    				  if(!safeQueue.isEmpty()){
-            			  safeQueue.poll();
-            		  }
-    				  if(northBarrier == null)
-    				  {
-    					  northBarrier = b;
-    				  }else if(southBarrier == null)
-    				  {
-    					  southBarrier = b;
-    					  break;
-    				  }
+    		  for(Barrier b : barriers) {
+    			  if(b.x - b.width < 0) {
+    				  if(!safeQueue.isEmpty())
+    					  safeQueue.poll();
+    				  barriers.remove(b);
+    				  break;
     			  }
     		  }
-    		  
-    		  if(northBarrier == null) {
-    			  Barrier b = new Barrier("north");
-    			  barriers.add(b);
-    			  northBarrier = b;
-    		  } else {
-    			  northBarrier.reset();  
-    		  }
-    		  
-    		  if(southBarrier == null){
-    			  Barrier b = new Barrier("south");
-    			  barriers.add(b);
-    			  southBarrier = b;
-    		  } else {
-    			  southBarrier.reset();
-    		  }
-    		  northBarrier.y = southBarrier.y + southBarrier.height + 175;
-    		  safeY = southBarrier.y + southBarrier.height + 87;
-    		  safeQueue.offer(safeY);
+    		  Barrier b = new Barrier("south");
+    		  barriers.add(b);
+    		  Barrier b1 = new Barrier("north");
+    		  b1.y = b.y + b.height + 175;
+    		  safeQueue.add(b1.y - 87);
+    		  barriers.add(b1);  
     	  }
     	  
     	  for(Barrier b : barriers) {

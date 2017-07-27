@@ -29,6 +29,7 @@ public class Dot {
 		y = Game.getSafeY();
 		System.out.println("this is y: " + y);
 		System.out.println("queue size: " + Game.safeQueue.size());
+		System.out.println(Game.safeQueue);
 	}
 
 	public Render getRender() {
