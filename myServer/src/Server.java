@@ -7,11 +7,10 @@ import java.util.concurrent.ThreadPoolExecutor;
 /**
  * Created by alexsun on 8/9/17.
  */
-public class Server {
+public class Server implements Runnable {
     private ThreadPoolExecutor executor;
     private void Start() throws IOException {
         executor = (ThreadPoolExecutor)Executors.newCachedThreadPool();
-        // Start a port 1235
         int port = 1235;
         ServerSocket serverSocket = new ServerSocket(port);
         System.out.println("ServerSocket Start");
@@ -22,18 +21,23 @@ public class Server {
              */
             Socket socket = serverSocket.accept();
             executor.execute(new ConnectionHandler(socket));
-
         }
 
     }
-    public static void main(String args[]){
-        Server thisServer = new Server();
+
+    @Override
+    public void run() {
         try {
-            thisServer.Start();
+            Start();
         } catch (IOException e) {
-            System.out.println("Error occurs when start Server");
             e.printStackTrace();
         }
+    }
+
+    public static void main(String args[]) throws InterruptedException {
+        Server thisServer = new Server();
+        Thread listenThread = new Thread(thisServer);
+        listenThread.start();
     }
 
 }
