@@ -1,6 +1,7 @@
 package edu.zju.cst.w3.service;
 import edu.zju.cst.w3.dao.IStockDAO;
 import edu.zju.cst.w3.model.Stock;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Date;
@@ -37,10 +38,20 @@ public class StockService implements IStockService {
         double ans = -1;
         String id = "";
         Date curDate = startDate;
+        SimpleDateFormat fmt = new SimpleDateFormat("yyyyMMdd");
         Calendar c = Calendar.getInstance();
         c.setTime(curDate);
-        while(curDate != endDate){
+
+        while(Long.parseLong(fmt.format(curDate)) <= Long.parseLong(fmt.format(endDate)))
+        {
+
             ArrayList<Stock> arrayList = stockDao.getDateMap().get(curDate);
+            if(arrayList == null){
+                if(Long.parseLong(fmt.format(curDate)) == Long.parseLong(fmt.format(endDate)))
+                    break;
+                else continue;
+            }
+
             for(Stock stock : arrayList){
                 if(stock.getClosingPrice() > ans){
                     ans = stock.getClosingPrice();
@@ -50,6 +61,7 @@ public class StockService implements IStockService {
             c.add(Calendar.DAY_OF_MONTH, 1);
             curDate = c.getTime();
         }
+
         if(ans != -1){
             return id;
         }

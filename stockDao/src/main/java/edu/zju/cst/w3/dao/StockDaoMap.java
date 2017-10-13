@@ -1,7 +1,7 @@
 package edu.zju.cst.w3.dao;
-
 import edu.zju.cst.w3.model.Stock;
 
+import java.text.SimpleDateFormat;
 import java.util.*;
 
 public class StockDaoMap implements IStockDAO {
@@ -13,9 +13,10 @@ public class StockDaoMap implements IStockDAO {
     public double getStockClosingPrice(String stockId, Date date) {
 
         ArrayList<Stock> list = map.get(stockId);
+        SimpleDateFormat fmt = new SimpleDateFormat("yyyyMMdd");
         double ans = -1;
         for(int i=0;i<list.size();i++){
-            if(list.get(i).getDate() == date){
+            if(fmt.format(list.get(i).getDate()).equals(fmt.format(date))){
                 ans =  list.get(i).getClosingPrice();
             }
         }
@@ -40,8 +41,9 @@ public class StockDaoMap implements IStockDAO {
         }
         else{
             ArrayList<Stock> arr = new ArrayList<Stock>();
-            dateMap.put(date,arr);
+            String justForRemoveYellowLine = null;
             arr.add(stock);
+            dateMap.put(date,arr);
         }
 
         if(map.containsKey(stockId)){
