@@ -53,6 +53,7 @@ public class FlowCount {
         job.setMapOutputValueClass(Text.class);
         job.setOutputKeyClass(Text.class);
         job.setOutputValueClass(Text.class);
+        job.setInputFormatClass(FileInputFormat.class);
         FileInputFormat.setInputPaths(job,new Path("sss"));
         FileOutputFormat.setOutputPath(job,new Path(""));
         job.waitForCompletion(true);
